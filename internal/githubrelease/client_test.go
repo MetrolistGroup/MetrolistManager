@@ -19,7 +19,7 @@ func TestFindAssetAndDownload(t *testing.T) {
 	var server *httptest.Server
 	server = httptest.NewTLSServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case "/repos/MetrolistGroup/Metrolist-KMP/releases/tags/v14.0.1":
+		case "/repos/MetrolistGroup/Metrolist/releases/tags/v14.0.1":
 			w.Header().Set("Content-Type", "application/json")
 			fmt.Fprintf(w, `{"tag_name":"v14.0.1","draft":false,"prerelease":false,"assets":[{"name":"app.zip","state":"uploaded","size":%d,"digest":"sha256:%s","browser_download_url":"%s/app.zip"}]}`,
 				len(content), hex.EncodeToString(digest[:]), server.URL)
@@ -34,7 +34,7 @@ func TestFindAssetAndDownload(t *testing.T) {
 	client := NewClient("test")
 	client.HTTPClient = server.Client()
 	client.APIBaseURL = server.URL
-	asset, err := client.FindAsset(context.Background(), "MetrolistGroup", "Metrolist-KMP", "v14.0.1", "app.zip")
+	asset, err := client.FindAsset(context.Background(), "MetrolistGroup", "Metrolist", "v14.0.1", "app.zip")
 	if err != nil {
 		t.Fatalf("FindAsset() error = %v", err)
 	}

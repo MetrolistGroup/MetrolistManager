@@ -13,6 +13,7 @@ import (
 	"time"
 	"unsafe"
 
+	"github.com/MetrolistGroup/MetrolistManager/internal/buildconfig"
 	"github.com/MetrolistGroup/MetrolistManager/internal/installer"
 	"github.com/go-ole/go-ole"
 	"github.com/go-ole/go-ole/oleutil"
@@ -170,7 +171,7 @@ func (Registrar) Register(root, version string, desktopShortcut bool) error {
 		"DisplayIcon":          launcher,
 		"UninstallString":      quote(manager) + " uninstall",
 		"QuietUninstallString": quote(manager) + " uninstall --silent",
-		"URLInfoAbout":         "https://github.com/MetrolistGroup/Metrolist-KMP",
+		"URLInfoAbout":         "https://github.com/" + buildconfig.RepositoryOwner + "/" + buildconfig.RepositoryName,
 	}); err != nil {
 		uninstallKey.Close()
 		return err

@@ -6,5 +6,5 @@ const (
 	ReleaseTag       = ""
 	DesktopAssetName = "Metrolist-Desktop-windows.zip"
 	RepositoryOwner  = "MetrolistGroup"
-	RepositoryName   = "Metrolist-KMP"
+	RepositoryName   = "Metrolist"
 )
