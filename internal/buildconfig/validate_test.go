@@ -11,7 +11,7 @@ func TestValidateConfiguration(t *testing.T) {
 		releaseTag:       "v14.0.0",
 		desktopAssetName: "Metrolist-Desktop-windows.zip",
 		repositoryOwner:  "MetrolistGroup",
-		repositoryName:   "Metrolist-KMP",
+		repositoryName:   "Metrolist",
 	}
 	if err := validate(valid); err != nil {
 		t.Fatalf("validate() error = %v", err)
