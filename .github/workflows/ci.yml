@@ -2,9 +2,10 @@ name: Verify
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
-    branches: [main]
+    branches: [master]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -48,3 +49,29 @@ jobs:
 
       - name: Cross-compile Windows manager
         run: GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags "-s -w -H=windowsgui" -o /tmp/MetrolistManager.exe .
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      - name: Test
+        run: go test ./...
+
+      - name: Build manager like the release
+        shell: pwsh
+        run: |
+          go run github.com/akavel/rsrc@v0.10.2 -arch amd64 -manifest MetrolistManager.exe.manifest -o rsrc_windows_amd64.syso
+          go build -trimpath -ldflags "-s -w -H=windowsgui" -o "$env:RUNNER_TEMP\MetrolistManager.exe" .
+
+      - name: Install, update and uninstall end to end
+        shell: pwsh
+        run: |
+          $env:METROLIST_MANAGER_E2E_BINARY = "$env:RUNNER_TEMP\MetrolistManager.exe"
+          go test -run TestEndToEndInstallUpdateAndUninstall -count=1 -v .
